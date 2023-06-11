@@ -36,7 +36,7 @@ const createUser = (req, res) => {
       message: 'Профиль пользователя создан!',
     }))
     .catch((err) => {
-      if (res.message.includes('validation failed')) {
+      if (err.message.includes('validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
@@ -49,7 +49,7 @@ const createUser = (req, res) => {
 };
 
 const updateUserProfile = (req, res) => {
-  User.findByIdAndUpdate(req.user._id, req.body)
+  User.findByIdAndUpdate(req.user._id, req.body, { runValidators: true })
     .orFail(() => new Error('Not found'))
     .then((user) => {
       res.status(200).send({
@@ -62,7 +62,7 @@ const updateUserProfile = (req, res) => {
         res.status(404).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (res.message.includes('validation failed')) {
+      } else if (err.message.includes('validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
@@ -88,7 +88,7 @@ const updateUserAvatar = (req, res) => {
         res.status(404).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (res.message.includes('validation failed')) {
+      } else if (err.message.includes('validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({

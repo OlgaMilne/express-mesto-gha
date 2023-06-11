@@ -51,7 +51,7 @@ const likeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (res.message.includes('validation failed')) {
+      } else if (err.message.includes('validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
@@ -79,7 +79,7 @@ const dislikeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (res.message.includes('validation failed')) {
+      } else if (err.message.includes('validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
