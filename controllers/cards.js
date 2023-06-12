@@ -23,7 +23,7 @@ const createCard = (req, res) => {
       message: 'Карточка создана!',
     }))
     .catch((err) => {
-      if (err.message.includes('validation failed')) {
+      if (err.message.includes('Validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
@@ -39,7 +39,7 @@ const likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .orFail(() => new Error('Not found'))
     .then((card) => res.status(200).send({
@@ -51,7 +51,7 @@ const likeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (err.message.includes('validation failed')) {
+      } else if (err.message.includes('Validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
@@ -67,7 +67,7 @@ const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .orFail(() => new Error('Not found'))
     .then((card) => res.status(200).send({
@@ -79,7 +79,7 @@ const dislikeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (err.message.includes('validation failed')) {
+      } else if (err.message.includes('Validation failed')) {
         res.status(400).send({ message: 'Вы ввели некорректные данные!' });
       } else {
         res.status(500).send({
