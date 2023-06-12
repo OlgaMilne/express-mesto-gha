@@ -23,7 +23,6 @@ const createCard = (req, res) => {
       message: 'Карточка создана!',
     }))
     .catch((err) => {
-      console.log(err.name);
       if (err.name === 'ValidationError') {
         res.status(400).send({
           message: 'Вы ввели некорректные данные!',
