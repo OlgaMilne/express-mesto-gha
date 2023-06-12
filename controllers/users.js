@@ -1,13 +1,19 @@
 const User = require('../models/user');
 
+const NOT_FOUND_ERROR = 404;
+const VALIDATION_ERROR = 400;
+const BAD_REQUEST_ERROR = 400;
+const INTERNAL_SERVER_ERROR = 500;
+
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch((err) => res.status(500).send({
-      message: 'Internal Server Error',
-      error: err.message,
-      stack: err.stack,
-    }));
+    .catch((err) => {
+      res.status(INTERNAL_SERVER_ERROR).send({
+        message: 'На сервере произошла ошибка',
+      });
+      console.log(`error:  ${err.message}, stack: ${err.stack}`);
+    });
 };
 
 const getUserById = (req, res) => {
@@ -16,19 +22,18 @@ const getUserById = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такой пользователь не найден!',
         });
       } else if (err.name === 'CastError') {
-        res.status(400).send({
+        res.status(BAD_REQUEST_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -41,15 +46,14 @@ const createUser = (req, res) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({
+        res.status(VALIDATION_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -69,19 +73,22 @@ const updateUserProfile = (req, res) => {
     })
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (err.name === 'CastError' || err.name === 'ValidationError') {
-        res.status(400).send({
+      } else if (err.name === 'CastError') {
+        res.status(BAD_REQUEST_ERROR).send({
+          message: 'Вы ввели некорректные данные!',
+        });
+      } else if (err.name === 'ValidationError') {
+        res.status(VALIDATION_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -101,19 +108,22 @@ const updateUserAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (err.name === 'CastError' || err.name === 'ValidationError') {
-        res.status(400).send({
+      } else if (err.name === 'CastError') {
+        res.status(BAD_REQUEST_ERROR).send({
+          message: 'Вы ввели некорректные данные!',
+        });
+      } else if (err.name === 'ValidationError') {
+        res.status(VALIDATION_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };

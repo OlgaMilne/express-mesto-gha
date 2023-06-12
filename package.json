@@ -9,7 +9,7 @@
     "lint": "npx eslint ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Olga Milne",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",

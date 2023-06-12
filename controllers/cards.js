@@ -1,14 +1,20 @@
 const Card = require('../models/card');
 
+const NOT_FOUND_ERROR = 404;
+const VALIDATION_ERROR = 400;
+const BAD_REQUEST_ERROR = 400;
+const INTERNAL_SERVER_ERROR = 500;
+
 const getCards = (req, res) => {
   Card.find({})
     .populate('owner')
     .then((cards) => res.status(200).send(cards))
-    .catch((err) => res.status(500).send({
-      message: 'Internal Server Error',
-      error: err.message,
-      stack: err.stack,
-    }));
+    .catch((err) => {
+      res.status(INTERNAL_SERVER_ERROR).send({
+        message: 'На сервере произошла ошибка',
+      });
+      console.log(`error:  ${err.message}, stack: ${err.stack}`);
+    });
 };
 
 const createCard = (req, res) => {
@@ -24,16 +30,14 @@ const createCard = (req, res) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({
+        res.status(VALIDATION_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          name: err.name,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -51,19 +55,18 @@ const likeCard = (req, res) => {
     }))
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такая карточка не найдена!',
         });
       } else if (err.name === 'CastError') {
-        res.status(400).send({
+        res.status(BAD_REQUEST_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -81,19 +84,18 @@ const dislikeCard = (req, res) => {
     }))
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такая карточка не найдена!',
         });
       } else if (err.name === 'CastError') {
-        res.status(400).send({
+        res.status(BAD_REQUEST_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -107,19 +109,18 @@ const deleteCard = (req, res) => {
     }))
     .catch((err) => {
       if (err.message === 'Not found') {
-        res.status(404).send({
+        res.status(NOT_FOUND_ERROR).send({
           message: 'Такая карточка не найдена!',
         });
       } else if (err.name === 'CastError') {
-        res.status(400).send({
+        res.status(BAD_REQUEST_ERROR).send({
           message: 'Вы ввели некорректные данные!',
         });
       } else {
-        res.status(500).send({
-          message: 'Internal Server Error',
-          error: err.message,
-          stack: err.stack,
+        res.status(INTERNAL_SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
         });
+        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
