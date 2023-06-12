@@ -23,12 +23,16 @@ const createCard = (req, res) => {
       message: 'Карточка создана!',
     }))
     .catch((err) => {
-      if (err.message.includes('Validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      console.log(err.name);
+      if (err.name === 'ValidationError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
           error: err.message,
+          name: err.name,
           stack: err.stack,
         });
       }
@@ -51,8 +55,10 @@ const likeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (err.message.includes('Validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
@@ -79,8 +85,10 @@ const dislikeCard = (req, res) => {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
         });
-      } else if (err.message.includes('Validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
@@ -102,6 +110,10 @@ const deleteCard = (req, res) => {
       if (err.message === 'Not found') {
         res.status(404).send({
           message: 'Такая карточка не найдена!',
+        });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
         });
       } else {
         res.status(500).send({

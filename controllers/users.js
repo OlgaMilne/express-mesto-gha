@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.send(users))
+    .then((users) => res.status(200).send(users))
     .catch((err) => res.status(500).send({
       message: 'Internal Server Error',
       error: err.message,
@@ -18,6 +18,10 @@ const getUserById = (req, res) => {
       if (err.message === 'Not found') {
         res.status(404).send({
           message: 'Такой пользователь не найден!',
+        });
+      } else if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
         });
       } else {
         res.status(500).send({
@@ -36,8 +40,10 @@ const createUser = (req, res) => {
       message: 'Профиль пользователя создан!',
     }))
     .catch((err) => {
-      if (err.message.includes('validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      if (err.name === 'ValidationError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
@@ -66,8 +72,10 @@ const updateUserProfile = (req, res) => {
         res.status(404).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (err.message.includes('Validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      } else if (err.name === 'CastError' || err.name === 'ValidationError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
@@ -96,8 +104,10 @@ const updateUserAvatar = (req, res) => {
         res.status(404).send({
           message: 'Такой пользователь не найден!',
         });
-      } else if (err.message.includes('Validation failed')) {
-        res.status(400).send({ message: 'Вы ввели некорректные данные!' });
+      } else if (err.name === 'CastError' || err.name === 'ValidationError') {
+        res.status(400).send({
+          message: 'Вы ввели некорректные данные!',
+        });
       } else {
         res.status(500).send({
           message: 'Internal Server Error',
