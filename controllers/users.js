@@ -1,18 +1,19 @@
 const User = require('../models/user');
 
-const NOT_FOUND_ERROR = 404;
-const VALIDATION_ERROR = 400;
-const BAD_REQUEST_ERROR = 400;
-const INTERNAL_SERVER_ERROR = 500;
+const {
+  NOT_FOUND_ERROR,
+  VALIDATION_ERROR,
+  BAD_REQUEST_ERROR,
+  INTERNAL_SERVER_ERROR,
+} = require('../utils/constants');
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
+    .then((users) => res.send(users))
+    .catch(() => {
       res.status(INTERNAL_SERVER_ERROR).send({
         message: 'На сервере произошла ошибка',
       });
-      console.log(`error:  ${err.message}, stack: ${err.stack}`);
     });
 };
 
@@ -33,7 +34,6 @@ const getUserById = (req, res) => {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -47,13 +47,12 @@ const createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR).send({
-          message: 'Вы ввели некорректные данные!',
+          message: `Вы ввели некорректные данные: ${err.message}`,
         });
       } else {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -66,7 +65,7 @@ const updateUserProfile = (req, res) => {
   )
     .orFail(() => new Error('Not found'))
     .then((user) => {
-      res.status(200).send({
+      res.send({
         data: user,
         message: 'Профиль пользователя обновлен!',
       });
@@ -82,13 +81,12 @@ const updateUserProfile = (req, res) => {
         });
       } else if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR).send({
-          message: 'Вы ввели некорректные данные!',
+          message: `Вы ввели некорректные данные: ${err.message}`,
         });
       } else {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -101,7 +99,7 @@ const updateUserAvatar = (req, res) => {
   )
     .orFail(() => new Error('Not found'))
     .then((user) => {
-      res.status(200).send({
+      res.send({
         data: user,
         message: 'Аватар пользователя обновлен!',
       });
@@ -117,13 +115,12 @@ const updateUserAvatar = (req, res) => {
         });
       } else if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR).send({
-          message: 'Вы ввели некорректные данные!',
+          message: `Вы ввели некорректные данные: ${err.message}`,
         });
       } else {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };

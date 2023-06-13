@@ -3,6 +3,8 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
+const helmet = require('helmet');
+
 const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
@@ -14,6 +16,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   .then(() => console.log('Подключили'))
   .catch(() => console.log('Не подключили'));
 
+app.use(helmet());
 app.use(express.json());
 
 app.use((req, res, next) => {

@@ -1,19 +1,20 @@
 const Card = require('../models/card');
 
-const NOT_FOUND_ERROR = 404;
-const VALIDATION_ERROR = 400;
-const BAD_REQUEST_ERROR = 400;
-const INTERNAL_SERVER_ERROR = 500;
+const {
+  NOT_FOUND_ERROR,
+  VALIDATION_ERROR,
+  BAD_REQUEST_ERROR,
+  INTERNAL_SERVER_ERROR,
+} = require('../utils/constants');
 
 const getCards = (req, res) => {
   Card.find({})
     .populate('owner')
-    .then((cards) => res.status(200).send(cards))
-    .catch((err) => {
+    .then((cards) => res.send(cards))
+    .catch(() => {
       res.status(INTERNAL_SERVER_ERROR).send({
         message: 'На сервере произошла ошибка',
       });
-      console.log(`error:  ${err.message}, stack: ${err.stack}`);
     });
 };
 
@@ -31,13 +32,12 @@ const createCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR).send({
-          message: 'Вы ввели некорректные данные!',
+          message: `Вы ввели некорректные данные: ${err.message}`,
         });
       } else {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -49,7 +49,7 @@ const likeCard = (req, res) => {
     { new: true, runValidators: true },
   )
     .orFail(() => new Error('Not found'))
-    .then((card) => res.status(200).send({
+    .then((card) => res.send({
       data: card,
       message: 'Карточку лайкнули!',
     }))
@@ -66,7 +66,6 @@ const likeCard = (req, res) => {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -78,7 +77,7 @@ const dislikeCard = (req, res) => {
     { new: true, runValidators: true },
   )
     .orFail(() => new Error('Not found'))
-    .then((card) => res.status(200).send({
+    .then((card) => res.send({
       data: card,
       message: 'Карточку дизлайкнули!',
     }))
@@ -95,7 +94,6 @@ const dislikeCard = (req, res) => {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
@@ -103,7 +101,7 @@ const dislikeCard = (req, res) => {
 const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => new Error('Not found'))
-    .then((card) => res.status(200).send({
+    .then((card) => res.send({
       data: card,
       message: 'Карточка удалена',
     }))
@@ -120,7 +118,6 @@ const deleteCard = (req, res) => {
         res.status(INTERNAL_SERVER_ERROR).send({
           message: 'На сервере произошла ошибка',
         });
-        console.log(`error:  ${err.message}, stack: ${err.stack}`);
       }
     });
 };
