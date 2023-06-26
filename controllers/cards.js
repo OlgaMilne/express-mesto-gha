@@ -19,12 +19,14 @@ const createCard = (req, res, next) => {
       link,
       owner: req.user,
     },
-    { new: true, runValidators: true },
+    { new: true },
   )
-    .then((card) => res.status(201).send({
-      data: card,
-      message: 'Карточка создана!',
-    }))
+    .then((card) => {
+      res.status(201).send({
+        data: card,
+        message: 'Карточка создана!',
+      });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(`Вы ввели некорректные данные: ${err.message}`));
@@ -63,18 +65,20 @@ const dislikeCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findOne(req.params.cardid)
+  Card.findById(req.params.cardId)
     .orFail(() => new NotFoundError('Такая карточка не найдена!'))
     .then((card) => {
-      if (card.owner === req.user) {
-        Card.findByIdAndRemove(req.params.cardId)
-          .then((deletedCard) => res.send({
-            data: deletedCard,
-            message: 'Карточка удалена',
-          }));
-      } else {
+      if (!card.owner._id === req.user._id) {
         return Promise.reject(new ForbiddenError('У Вас нет прав на удаление карточки!'));
       }
+      Card.findByIdAndRemove(req.params.cardId)
+        .then((deletedCard) => {
+          res.send({
+            data: deletedCard,
+            message: 'Карточка удалена',
+          });
+        })
+        .catch(next);
     })
     .catch(next);
 };

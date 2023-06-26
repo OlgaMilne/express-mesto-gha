@@ -29,6 +29,6 @@
 * React
 * бэкенд Node.js + Express + MongoDB
 
-#### Ссылка на сайт проекта
+#### Ссылка на репозиторий проекта
 
-https://olgamilne.github.io/express-mesto-gha
+https://github.com/OlgaMilne/express-mesto-gha

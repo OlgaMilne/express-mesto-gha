@@ -8,5 +8,5 @@ module.exports = (err, req, res, next) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
-    console.log(`Вот ошибка ${err}`);
+  next();
 };

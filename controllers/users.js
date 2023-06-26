@@ -71,15 +71,28 @@ const createUser = (req, res, next) => {
       if (user) {
         return Promise.reject(new ConflictError('Такой пользователь уже существует!'));
       }
-      bcryptjs.hash(String(req.body.password), 10)
+      return bcryptjs.hash(String(req.body.password), 10)
         .then((hash) => {
           User.create({
             ...req.body,
             password: hash,
           })
             .then((newUser) => {
+              const {
+                _id,
+                name,
+                about,
+                avatar,
+                email,
+              } = newUser;
               res.status(201).send({
-                data: newUser,
+                data: {
+                  _id,
+                  name,
+                  about,
+                  avatar,
+                  email,
+                },
                 message: 'Профиль пользователя создан!',
               });
             })
