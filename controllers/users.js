@@ -64,8 +64,9 @@ const getUserById = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -106,8 +107,9 @@ const createUser = (req, res, next) => {
             .catch((err) => {
               if (err.name === 'ValidationError') {
                 next(new BadRequestError('Вы ввели некорректные данные!'));
+              } else {
+                next(err);
               }
-              next(err);
             });
         });
     })
@@ -135,8 +137,9 @@ const updateUserProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Вы ввели некорректные данные!'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 

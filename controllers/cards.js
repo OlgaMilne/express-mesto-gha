@@ -49,8 +49,9 @@ const likeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -68,8 +69,9 @@ const dislikeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -92,8 +94,9 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
