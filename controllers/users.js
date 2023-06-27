@@ -8,7 +8,6 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
 const ConflictError = require('../errors/conflict-err');
-const ForbiddenError = require('../errors/forbidden-err');
 
 const login = (req, res, next) => {
   User.findOne({ email: req.body.email })
@@ -20,7 +19,7 @@ const login = (req, res, next) => {
       return bcryptjs.compare(req.body.password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new ForbiddenError('Неправильные почта или пароль'));
+            return Promise.reject(new UnauthorizedError('Неправильные почта или пароль'));
           }
           return user;
         });
@@ -62,7 +61,12 @@ const getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .orFail(() => new NotFoundError('Такой пользователь не найден!'))
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Вы ввели некорректный запрос!'));
+      }
+      next(err);
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -74,16 +78,19 @@ const createUser = (req, res, next) => {
       return bcryptjs.hash(String(req.body.password), 10)
         .then((hash) => {
           User.create({
-            ...req.body,
+            email: req.body.email,
             password: hash,
+            name: req.body.name,
+            about: req.body.about,
+            avatar: req.body.avatar,
           })
             .then((newUser) => {
               const {
                 _id,
+                email,
                 name,
                 about,
                 avatar,
-                email,
               } = newUser;
               res.status(201).send({
                 data: {
@@ -97,6 +104,9 @@ const createUser = (req, res, next) => {
               });
             })
             .catch((err) => {
+              if (err.name === 'ValidationError') {
+                next(new BadRequestError('Вы ввели некорректные данные!'));
+              }
               next(err);
             });
         });
@@ -109,7 +119,10 @@ const createUser = (req, res, next) => {
 const updateUserProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
-    req.body,
+    {
+      name: req.body.name,
+      about: req.body.about,
+    },
     { new: true },
   )
     .orFail(() => new NotFoundError('Такой пользователь не найден!'))
@@ -119,7 +132,12 @@ const updateUserProfile = (req, res, next) => {
         message: 'Профиль пользователя обновлен!',
       });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Вы ввели некорректные данные!'));
+      }
+      next(err);
+    });
 };
 
 const updateUserAvatar = (req, res, next) => {
@@ -137,8 +155,8 @@ const updateUserAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Вы ввели некорректные данные!'));
-      } else if (err.message.includes('Validation failed')) {
+        next(new BadRequestError('Вы ввели некорректный запрос!'));
+      } else if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректный URL!'));
       } else {
         next(err);

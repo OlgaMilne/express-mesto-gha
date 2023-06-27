@@ -6,7 +6,6 @@ const ForbiddenError = require('../errors/forbidden-err');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
     .then((cards) => res.send(cards))
     .catch(next);
 };
@@ -17,7 +16,7 @@ const createCard = (req, res, next) => {
     {
       name,
       link,
-      owner: req.user,
+      owner: req.user._id,
     },
     { new: true },
   )
@@ -47,7 +46,12 @@ const likeCard = (req, res, next) => {
       data: card,
       message: 'Карточку лайкнули!',
     }))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Вы ввели некорректный запрос!'));
+      }
+      next(err);
+    });
 };
 
 const dislikeCard = (req, res, next) => {
@@ -61,7 +65,12 @@ const dislikeCard = (req, res, next) => {
       data: card,
       message: 'Карточку дизлайкнули!',
     }))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Вы ввели некорректный запрос!'));
+      }
+      next(err);
+    });
 };
 
 const deleteCard = (req, res, next) => {
@@ -71,7 +80,7 @@ const deleteCard = (req, res, next) => {
       if (!card.owner._id === req.user._id) {
         return Promise.reject(new ForbiddenError('У Вас нет прав на удаление карточки!'));
       }
-      Card.findByIdAndRemove(req.params.cardId)
+      return Card.findByIdAndRemove(req.params.cardId)
         .then((deletedCard) => {
           res.send({
             data: deletedCard,
@@ -80,7 +89,12 @@ const deleteCard = (req, res, next) => {
         })
         .catch(next);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Вы ввели некорректный запрос!'));
+      }
+      next(err);
+    });
 };
 
 module.exports = {

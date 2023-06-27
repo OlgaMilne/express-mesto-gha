@@ -12,7 +12,7 @@ router.get('/me', getCurrentUser);
 
 router.get('/:id', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24),
+    id: Joi.string().alphanum().length(24).hex(),
   }),
 }), getUserById);
 
@@ -23,6 +23,10 @@ router.patch('/me', celebrate({
   }),
 }), updateUserProfile);
 
-router.patch('/me/avatar', updateUserAvatar);
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().uri(),
+  }),
+}), updateUserAvatar);
 
 module.exports = router;
