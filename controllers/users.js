@@ -93,7 +93,13 @@ const createUser = (req, res, next) => {
           })
             .then((newUser) => {
               res.status(201).send({
-                data: newUser,
+                data: {
+                  _id: newUser._id,
+                  email: newUser.email,
+                  name: newUser.name,
+                  about: newUser.about,
+                  avatar: newUser.avatar,
+                },
                 message: 'Профиль пользователя создан!',
               });
             })
