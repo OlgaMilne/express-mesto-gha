@@ -11,14 +11,12 @@ const getCards = (req, res, next) => {
 };
 
 const createCard = (req, res, next) => {
-  const { name, link } = req.body;
   Card.create(
     {
-      name,
-      link,
+      name: req.body.name,
+      link: req.body.link,
       owner: req.user._id,
     },
-    { new: true },
   )
     .then((card) => {
       res.status(201).send({

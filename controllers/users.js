@@ -24,10 +24,10 @@ const login = (req, res, next) => {
           return user;
         });
     })
-    .then((user) => {
+    .then((passedUser) => {
       const token = jwt.sign(
         {
-          _id: user._id,
+          _id: passedUser._id,
         },
         'some-secret-key',
         {
@@ -38,8 +38,14 @@ const login = (req, res, next) => {
         maxAge: 3600000 * 23 * 7,
         httpOnly: true,
         sameSite: true,
-      })
-        .end();
+      });
+      res.send({
+        _id: passedUser._id,
+        email: passedUser.email,
+        name: passedUser.name,
+        about: passedUser.about,
+        avatar: passedUser.avatar,
+      });
     })
     .catch(next);
 };
@@ -86,21 +92,8 @@ const createUser = (req, res, next) => {
             avatar: req.body.avatar,
           })
             .then((newUser) => {
-              const {
-                _id,
-                email,
-                name,
-                about,
-                avatar,
-              } = newUser;
               res.status(201).send({
-                data: {
-                  _id,
-                  name,
-                  about,
-                  avatar,
-                  email,
-                },
+                data: newUser,
                 message: 'Профиль пользователя создан!',
               });
             })
