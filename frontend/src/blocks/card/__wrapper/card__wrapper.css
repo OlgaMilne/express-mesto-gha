@@ -1,0 +1,8 @@
+.card__wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+}

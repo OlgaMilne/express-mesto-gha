@@ -1,0 +1,14 @@
+.cards {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  gap: 20px 17px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-line-pack: start;
+  align-content: start;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}

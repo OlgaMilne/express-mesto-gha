@@ -1,0 +1,23 @@
+.footer {
+  width: 880px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 30px auto 56px;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+@media screen and (max-width: 1024px) {
+  .footer {
+    width: 86%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .footer {
+    width: 282px;
+    margin-bottom: 33px;
+  }
+}

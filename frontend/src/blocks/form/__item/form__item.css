@@ -1,0 +1,19 @@
+.form__item {
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+  margin: 0 auto 5px;
+  padding: 0 2px 9px;
+  outline: none;
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}

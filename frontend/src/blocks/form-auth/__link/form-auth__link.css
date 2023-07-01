@@ -1,0 +1,26 @@
+.form-auth__link {
+  width: 100%;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  margin: 15px 0 44px;
+  padding: 0;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;  
+}
+
+.form-auth__link:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 480px) {
+  .form-auth__link {
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

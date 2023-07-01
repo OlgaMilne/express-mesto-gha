@@ -1,0 +1,21 @@
+.form-auth__container {
+  width: 430px;
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px 36px 36px;
+  border-radius: 10px;
+  background-color: #000;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 480px) {
+  .form-auth__container {
+    width: 88.125%;
+    min-width: 88.125%;
+    padding: 0px 22px 20px;
+  }
+}

@@ -1,0 +1,22 @@
+.popup {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .5);
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: visibility .7s, opacity .6s ease;
+  -o-transition: visibility .7s, opacity .6s ease;
+  transition: visibility .7s, opacity .6s ease;
+}

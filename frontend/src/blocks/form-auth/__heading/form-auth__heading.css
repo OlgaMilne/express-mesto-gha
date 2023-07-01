@@ -1,0 +1,22 @@
+.form-auth__heading {
+  width: 100%;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+  margin: 0 0 50px;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+@media screen and (max-width: 480px) {
+  .form-auth__heading {
+    margin-bottom: 40px;
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

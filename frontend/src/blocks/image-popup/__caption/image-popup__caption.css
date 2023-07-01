@@ -1,0 +1,10 @@
+.image-popup__caption {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 10px 0 0;
+  padding: 0;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}

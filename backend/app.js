@@ -11,6 +11,8 @@ const { errors } = require('celebrate');
 
 const errorsHandler = require('./middlewares/errorsHandler');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
@@ -27,7 +29,11 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(requestLogger);
+
 app.use(router);
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorsHandler);

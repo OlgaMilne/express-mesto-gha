@@ -1,0 +1,57 @@
+.profile__userAbout {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 0;
+  padding: 0;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1024px) {
+  .profile__userActivity {
+    max-width: 440px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .profile__userActivity {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .profile__userActivity {
+    max-width: 330px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile__userActivity {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .profile__userActivity {
+    max-width: 320px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile__userActivity {
+    max-width: 224px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .profile__userActivity {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

@@ -1,0 +1,24 @@
+.header__link {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.header__link:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 480px) {
+  .header__link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
