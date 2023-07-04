@@ -1,6 +1,8 @@
 const ALLOWED_DOMAINS = [
   'http://places.nomoreparties.sbs',
+  'https://places.nomoreparties.sbs',
   'http://api.places.nomoreparties.sbs',
+  'https://api.places.nomoreparties.sbs',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
