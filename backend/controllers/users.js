@@ -39,7 +39,7 @@ const logIn = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 23 * 7,
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'None',
         secure: NODE_ENV === 'production',
       });
       res.send({
@@ -100,14 +100,11 @@ const createUser = (req, res, next) => {
           })
             .then((newUser) => {
               res.status(201).send({
-                data: {
-                  _id: newUser._id,
-                  email: newUser.email,
-                  name: newUser.name,
-                  about: newUser.about,
-                  avatar: newUser.avatar,
-                },
-                message: 'Профиль пользователя создан!',
+                _id: newUser._id,
+                email: newUser.email,
+                name: newUser.name,
+                about: newUser.about,
+                avatar: newUser.avatar,
               });
             })
             .catch((err) => {
@@ -135,10 +132,7 @@ const updateUserProfile = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Такой пользователь не найден!'))
     .then((user) => {
-      res.send({
-        data: user,
-        message: 'Профиль пользователя обновлен!',
-      });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -157,10 +151,7 @@ const updateUserAvatar = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Такой пользователь не найден!'))
     .then((user) => {
-      res.send({
-        data: user,
-        message: 'Аватар пользователя обновлен!',
-      });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
