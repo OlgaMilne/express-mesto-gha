@@ -17,60 +17,68 @@ class Api {
   }
 
   getInitialCards() {
-    return this._request(this._baseUrl + 'cards', {
+    return this._request(this._baseUrl + '/cards', {
       method: 'GET',
       headers: this._headers,
+      credentials: 'include',
     });
   }
 
   addCard(bodyObj) {
-    return this._request(this._baseUrl + 'cards', {
+    return this._request(this._baseUrl + '/cards', {
       method: 'POST',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify(bodyObj),
     });
   }
 
   deleteCard(endUrl) {
-    return this._request(this._baseUrl + 'cards/' + endUrl, {
+    return this._request(this._baseUrl + '/cards/' + endUrl, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     });
   }
 
   getUserProfile() {
-    return this._request(this._baseUrl + 'users/me', {
+    return this._request(this._baseUrl + '/users/me', {
       method: 'GET',
       headers: this._headers,
+      credentials: 'include',
     });
   }
 
   editUserProfile(bodyObj) {
-    return this._request(this._baseUrl + 'users/me', {
+    return this._request(this._baseUrl + '/users/me', {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify(bodyObj),
     });
   }
 
   editUserAvatar(bodyObj) {
-    return this._request(this._baseUrl + 'users/me/avatar', {
+    return this._request(this._baseUrl + '/users/me/avatar', {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify(bodyObj),
     });
   }
 
   changeLikeCardStatus(cardId, hasUserLike) {
     if (hasUserLike) {
-      return this._request(this._baseUrl + 'cards/' + cardId + '/likes', {
+      return this._request(this._baseUrl + '/cards/' + cardId + '/likes', {
         method: 'DELETE',
         headers: this._headers,
+        credentials: 'include',
       });
     } else {
-      return this._request(this._baseUrl + 'cards/' + cardId + '/likes', {
+      return this._request(this._baseUrl + '/cards/' + cardId + '/likes', {
         method: 'PUT',
         headers: this._headers,
+        credentials: 'include',
       });
     }
   }
@@ -78,10 +86,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://api.places.nomoreparties.sbs',
+  baseUrl: 'http://api.places.nomoreparties.sbs',
   headers: {
-    authorization: 'acc868aa-03f1-432c-addf-4dea173b05f4',
-    'content-type': 'application/json; charset=UTF-8',
+       'content-type': 'application/json; charset=UTF-8',
   },
 });
 

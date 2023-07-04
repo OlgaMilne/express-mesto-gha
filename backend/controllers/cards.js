@@ -19,10 +19,7 @@ const createCard = (req, res, next) => {
     },
   )
     .then((card) => {
-      res.status(201).send({
-        data: card,
-        message: 'Карточка создана!',
-      });
+      res.status(201).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -40,10 +37,7 @@ const likeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => new NotFoundError('Такая карточка не найдена!'))
-    .then((card) => res.send({
-      data: card,
-      message: 'Карточку лайкнули!',
-    }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
@@ -60,10 +54,7 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => new NotFoundError('Такая карточка не найдена!'))
-    .then((card) => res.send({
-      data: card,
-      message: 'Карточку дизлайкнули!',
-    }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Вы ввели некорректный запрос!'));
@@ -82,10 +73,7 @@ const deleteCard = (req, res, next) => {
       }
       return Card.findByIdAndRemove(req.params.cardId)
         .then((deletedCard) => {
-          res.send({
-            data: deletedCard,
-            message: 'Карточка удалена',
-          });
+          res.send(deletedCard);
         })
         .catch(next);
     })

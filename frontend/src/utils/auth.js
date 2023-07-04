@@ -20,6 +20,7 @@ class Auth {
         return this._request(this._baseUrl + '/signup', {
             method: 'POST',
             headers: this._headers,
+            credentials: 'include', 
             body: JSON.stringify(bodyObj),
         });
     }
@@ -28,23 +29,30 @@ class Auth {
         return this._request(this._baseUrl + '/signin', {
             method: 'POST',
             headers: this._headers,
+            credentials: 'include',
             body: JSON.stringify(bodyObj),
         });
     }
 
-    checkToken(userToken) {
-        const headers = this._headers;
-        headers.Authorization = `Bearer ${userToken}`;
-        return this._request(this._baseUrl + '/users/me', {
+    logout() {
+        return this._request(this._baseUrl + '/signout', {
             method: 'GET',
-            headers: headers,
+            headers: this._headers,     
+            credentials: 'include',     
         });
     }
 
+    checkToken() {
+            return this._request(this._baseUrl + '/users/me', {
+            method: 'GET',
+            headers: this.headers,
+            credentials: 'include',     
+        });
+    }
 }
 
 const auth = new Auth({
-    baseUrl: 'https://api.places.nomoreparties.sbs',
+    baseUrl: 'http://api.places.nomoreparties.sbs',
     headers: {
         'content-type': 'application/json',
     },

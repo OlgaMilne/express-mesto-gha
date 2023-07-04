@@ -4,12 +4,14 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
+const { NODE_ENV, JWT_SECRET_KEY } = process.env;
+
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
 const ConflictError = require('../errors/conflict-err');
 
-const login = (req, res, next) => {
+const logIn = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .select('+password')
     .then((user) => {
@@ -29,7 +31,7 @@ const login = (req, res, next) => {
         {
           _id: passedUser._id,
         },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET_KEY : 'some-secret-key',
         {
           expiresIn: 3600 * 24 * 7,
         },
@@ -37,7 +39,8 @@ const login = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 23 * 7,
         httpOnly: true,
-        sameSite: true,
+        sameSite: 'none',
+        secure: NODE_ENV === 'production',
       });
       res.send({
         _id: passedUser._id,
@@ -48,6 +51,10 @@ const login = (req, res, next) => {
       });
     })
     .catch(next);
+};
+
+const logOut = (req, res) => {
+  res.clearCookie('jwt').send({ message: 'Пользователь вышел' });
 };
 
 const getUsers = (req, res, next) => {
@@ -167,7 +174,8 @@ const updateUserAvatar = (req, res, next) => {
 };
 
 module.exports = {
-  login,
+  logIn,
+  logOut,
   getUsers,
   getUserById,
   getCurrentUser,

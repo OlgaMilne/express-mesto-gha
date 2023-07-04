@@ -4,7 +4,7 @@ const { celebrate, Joi } = require('celebrate');
 
 const auth = require('../middlewares/auth');
 
-const { login, createUser } = require('../controllers/users');
+const { logIn, logOut, createUser } = require('../controllers/users');
 
 const NotFoundError = require('../errors/not-found-err');
 
@@ -13,7 +13,7 @@ router.post('/signin', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
-}), login);
+}), logIn);
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -24,6 +24,8 @@ router.post('/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
+
+router.get('/signout', logOut);
 
 router.use(auth);
 

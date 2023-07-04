@@ -36,34 +36,38 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  Promise.all([ api.getUserProfile(), api.getInitialCards() ])
-  .then(( [ userData, cardsData ] ) =>{
-    setCurrentUser(userData);
-    setCards(cardsData);
-  })
-  .catch(err => {
-    console.log(err);
-  });
-}, []);
-
-  useEffect(function () {
-    const userToken = localStorage.getItem('token');
-    if (userToken) {
-      auth.checkToken(userToken)
-        .then((userData) => {
-          setUserEmail(userData.data.email);
-          setLoggedIn(true);
-          navigate('/', { replace: true, });
+    if (loggedIn) {
+      Promise.all([api.getUserProfile(), api.getInitialCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData.reverse());
         })
-        .catch((err) => {
-          if (err === '401') {
-            localStorage.removeItem('token');
-          } else {
-            console.log(err);
-          }
+        .catch(err => {
+          console.log(err);
         });
     }
   }, [loggedIn]);
+
+
+
+  useEffect(function () {
+    auth.checkToken()
+      .then((userData) => {
+        setUserEmail(userData.email);
+        setLoggedIn(true);
+        navigate('/', { replace: true, });
+      })
+      .catch((err) => {
+        if (err === '401') {
+          setLoggedIn(false);
+          navigate('/sign-in', { replace: true, });
+        } else {
+          console.log(err);
+        }
+      });
+  }, [loggedIn]);
+
+
 
 
   function handleRegisterUser(userData) {
@@ -82,8 +86,8 @@ function App() {
 
   function handleLogin(userData) {
     auth.login(userData)
-      .then((res) => {
-        localStorage.setItem('token', res.token);
+      .then((user) => {
+        setUserEmail(user.email);
         setLoggedIn(true);
         navigate('/', { replace: true, })
       })
@@ -95,7 +99,7 @@ function App() {
   }
 
   function logOut() {
-    localStorage.removeItem('token');
+    auth.logout();
     setLoggedIn(false);
     navigate('/', { replace: true, })
   }
