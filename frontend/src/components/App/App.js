@@ -48,8 +48,6 @@ function App() {
     }
   }, [loggedIn]);
 
-
-
   useEffect(function () {
     auth.checkToken()
       .then((userData) => {
@@ -65,10 +63,7 @@ function App() {
           console.log(err);
         }
       });
-  }, [loggedIn]);
-
-
-
+  }, [loggedIn, navigate]);
 
   function handleRegisterUser(userData) {
     auth.register(userData)
@@ -99,9 +94,14 @@ function App() {
   }
 
   function logOut() {
-    auth.logout();
-    setLoggedIn(false);
-    navigate('/', { replace: true, })
+    auth.logout()
+      .then(() => {
+        setLoggedIn(false);
+        navigate('/sign-in', { replace: true, })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   function handleEditAvatarClick() {
@@ -176,7 +176,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const hasUserLike = card.likes.some(item => item._id === currentUser._id);
+    const hasUserLike = card.likes.some(i => i === currentUser._id);
     api.changeLikeCardStatus(card._id, hasUserLike)
       .then((newCard) => {
         setCards(cards.map((item) => item._id === card._id ? newCard : item,));

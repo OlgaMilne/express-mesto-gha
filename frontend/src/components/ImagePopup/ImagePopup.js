@@ -10,6 +10,7 @@ function ImagePopup({ card, isOpen, onClose }) {
                 onClose();
             }
         };
+        
         document.addEventListener('keydown', closeByEscape);
         return () => document.removeEventListener('keydown', closeByEscape);
     }, [isOpen]);

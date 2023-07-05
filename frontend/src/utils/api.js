@@ -12,12 +12,12 @@ class Api {
     };
   }
 
-  _request(url, options) {
-    return fetch(url, options).then(this._checkResponse);
+  _request(endpoint, options) {
+    return fetch(this._baseUrl+endpoint, options).then(this._checkResponse);
   }
 
   getInitialCards() {
-    return this._request(this._baseUrl + '/cards', {
+    return this._request('/cards', {
       method: 'GET',
       headers: this._headers,
       credentials: 'include',
@@ -25,7 +25,7 @@ class Api {
   }
 
   addCard(bodyObj) {
-    return this._request(this._baseUrl + '/cards', {
+    return this._request('/cards', {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
@@ -34,7 +34,7 @@ class Api {
   }
 
   deleteCard(endUrl) {
-    return this._request(this._baseUrl + '/cards/' + endUrl, {
+    return this._request('/cards/' + endUrl, {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include',
@@ -42,7 +42,7 @@ class Api {
   }
 
   getUserProfile() {
-    return this._request(this._baseUrl + '/users/me', {
+    return this._request('/users/me', {
       method: 'GET',
       headers: this._headers,
       credentials: 'include',
@@ -50,7 +50,7 @@ class Api {
   }
 
   editUserProfile(bodyObj) {
-    return this._request(this._baseUrl + '/users/me', {
+    return this._request('/users/me', {
       method: 'PATCH',
       headers: this._headers,
       credentials: 'include',
@@ -59,7 +59,7 @@ class Api {
   }
 
   editUserAvatar(bodyObj) {
-    return this._request(this._baseUrl + '/users/me/avatar', {
+    return this._request('/users/me/avatar', {
       method: 'PATCH',
       headers: this._headers,
       credentials: 'include',
@@ -69,13 +69,13 @@ class Api {
 
   changeLikeCardStatus(cardId, hasUserLike) {
     if (hasUserLike) {
-      return this._request(this._baseUrl + '/cards/' + cardId + '/likes', {
+      return this._request('/cards/' + cardId + '/likes', {
         method: 'DELETE',
         headers: this._headers,
         credentials: 'include',
       });
     } else {
-      return this._request(this._baseUrl + '/cards/' + cardId + '/likes', {
+      return this._request('/cards/' + cardId + '/likes', {
         method: 'PUT',
         headers: this._headers,
         credentials: 'include',
@@ -86,7 +86,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://api.places.nomoreparties.sbs',
+  baseUrl: 'http://localhost:3000',
   headers: {
        'content-type': 'application/json; charset=UTF-8',
   },

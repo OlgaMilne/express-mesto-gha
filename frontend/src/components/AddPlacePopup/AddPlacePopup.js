@@ -1,66 +1,47 @@
 import { useEffect, useState } from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
+import { useForm } from '../../hooks/useForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
 
-    const [name, setName] = useState('');
-    const [link, setLink] = useState('');
-    const [errorName, setErrorName] = useState('');
-    const [errorLink, setErrorLink] = useState('');
-    const [validationState, setValidationState] = useState({});
     const [isValid, setIsValid] = useState(true);
     const textSubmit = isLoading ? 'Создание...' : 'Создать';
+    const { values, setValues, errorMessages, setErrorMessages, validationState, handleChange } = useForm({});
+    const errorLocation = errorMessages['location'];
+    const errorLink = errorMessages['linkImage'];
 
     useEffect(() => {
-        setName('');
-        setLink('');
-        setIsValid(true);
+        setValues({ location: '', linkImage: '' });
+        setErrorMessages({ location: '', linkImage: '' });
+        setIsValid(false);
     }, [isOpen])
 
     useEffect(() => {
-        const state = Object.values(validationState).some((item) => {
-            return item === false;
-        });
-        setIsValid(!state);
+        if (values.location && values.linkImage) {
+            const state = Object.values(validationState).some((item) => {
+                return item === false;
+            });
+            setIsValid(!state);
+        }
     }, [validationState]);
-
-    function handleChangeName(e) {
-        if (!e.target.validity.valid) {
-            setErrorName(e.target.validationMessage);
-        } else {
-            setErrorName('');
-        }
-        setName(e.target.value);
-        setValidationState({ ...validationState, [e.target.name]: e.target.validity.valid });
-    }
-
-    function handleChangeLink(e) {
-        if (!e.target.validity.valid) {
-            setErrorLink(e.target.validationMessage);
-        } else {
-            setErrorLink('');
-        }
-        setLink(e.target.value);
-        setValidationState({ ...validationState, [e.target.name]: e.target.validity.valid });
-    }
 
     function handleSubmit(e) {
         e.preventDefault();
         onAddPlace({
-            "name": name,
-            "link": link,
+            "name": values.location,
+            "link": values.linkImage,
         });
     }
 
     return (
         <PopupWithForm isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isValid={isValid} popupName='add-card' formTitle="Новое место" formName="add-card" textSubmit={textSubmit}  >
             <input className="form__item form__item_name_location" type="text" name="location" placeholder="Место" minLength="2"
-                maxLength="30" value={name} onChange={handleChangeName} required />
+                maxLength="30" value={values.location} onChange={handleChange} required />
             <span className={`form__item-error form__item-error_name_location ${isValid ? "" : "form__item-error_active"}`} >
-                {errorName}
+                {errorLocation}
             </span>
             <input className="form__item form__item_name_linkImage" type="url" name="linkImage" placeholder="Ссылка на картинку"
-                value={link} onChange={handleChangeLink} required />
+                value={values.linkImage} onChange={handleChange} required />
             <span className={`form__item-error form__item-error_name_linkImage ${isValid ? "" : "form__item-error_active"}`} >
                 {errorLink}
             </span>

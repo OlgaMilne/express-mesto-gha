@@ -12,12 +12,12 @@ class Auth {
         };
     }
 
-    _request(url, options) {
-        return fetch(url, options).then(this._checkResponse);
-    }
+    _request(endpoint, options) {
+        return fetch(this._baseUrl+endpoint, options).then(this._checkResponse);
+      }
 
     register(bodyObj) {
-        return this._request(this._baseUrl + '/signup', {
+        return this._request('/signup', {
             method: 'POST',
             headers: this._headers,
             credentials: 'include', 
@@ -26,7 +26,7 @@ class Auth {
     }
 
     login(bodyObj) {
-        return this._request(this._baseUrl + '/signin', {
+        return this._request('/signin', {
             method: 'POST',
             headers: this._headers,
             credentials: 'include',
@@ -35,7 +35,7 @@ class Auth {
     }
 
     logout() {
-        return this._request(this._baseUrl + '/signout', {
+        return this._request('/signout', {
             method: 'GET',
             headers: this._headers,     
             credentials: 'include',     
@@ -43,7 +43,7 @@ class Auth {
     }
 
     checkToken() {
-            return this._request(this._baseUrl + '/users/me', {
+            return this._request('/users/me', {
             method: 'GET',
             headers: this.headers,
             credentials: 'include',     
@@ -52,7 +52,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: 'http://api.places.nomoreparties.sbs',
+    baseUrl: 'http://localhost:3000',
     headers: {
         'content-type': 'application/json',
     },
