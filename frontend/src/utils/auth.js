@@ -52,7 +52,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://api.places.nomoreparties.sbs',
     headers: {
         'content-type': 'application/json',
     },
