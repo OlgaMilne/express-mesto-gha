@@ -37,7 +37,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
         <PopupWithForm isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isValid={isValid} popupName='add-card' formTitle="Новое место" formName="add-card" textSubmit={textSubmit}  >
             <input className="form__item form__item_name_location" type="text" name="location" placeholder="Место" minLength="2"
                 maxLength="30" value={values.location} onChange={handleChange} required />
-            <span className={`form__item-error form__item-error_name_location ${isValid ? "" : "form__item-error_active"}`} >
+            <span className={`form__item-error form__item-error_name_location ${!isOpen && (isValid || !isValid)  ? "" : "form__item-error_active"}`} >
                 {errorLocation}
             </span>
             <input className="form__item form__item_name_linkImage" type="url" name="linkImage" placeholder="Ссылка на картинку"
