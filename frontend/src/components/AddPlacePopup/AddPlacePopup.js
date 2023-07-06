@@ -42,7 +42,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
             </span>
             <input className="form__item form__item_name_linkImage" type="url" name="linkImage" placeholder="Ссылка на картинку"
                 value={values.linkImage} onChange={handleChange} required />
-            <span className={`form__item-error form__item-error_name_linkImage ${isValid ? "" : "form__item-error_active"}`} >
+            <span className={`form__item-error form__item-error_name_linkImage ${!isOpen && (isValid || !isValid) ? "" : "form__item-error_active"}`} >
                 {errorLink}
             </span>
         </PopupWithForm>

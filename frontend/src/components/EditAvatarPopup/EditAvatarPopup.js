@@ -5,9 +5,9 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
 
     const currentUser = useContext(CurrentUserContext);
-    
+
     const inputElement = useRef();
-    const [avatar, setAvatar] = useState(''); 
+    const [avatar, setAvatar] = useState('');
     const [error, setError] = useState('');
     const [validationState, setValidationState] = useState({});
     const [isValid, setIsValid] = useState(true);
@@ -36,7 +36,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
     }
 
     function handleSubmit(e) {
-        e.preventDefault();      
+        e.preventDefault();
         onUpdateAvatar({
             'avatar': avatar,
         })
